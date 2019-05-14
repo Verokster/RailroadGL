@@ -1,0 +1,215 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Manifest
+//
+
+IDM_MANIFEST				RT_MANIFEST				"module.manifest"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE
+BEGIN
+	IDS_ERROR_CHOOSE_PF				"ChoosePixelFormat failed"
+	IDS_ERROR_SET_PF				"SetPixelFormat failed"
+	IDS_ERROR_DESCRIBE_PF			"DescribePixelFormat failed"
+	IDS_ERROR_NEED_PALETTE			"Needs palette"
+	IDS_ERROR_BAD_PF				"Bad pixel type"
+	IDS_ERROR_ARB_VERSION			"Invalid ARB version"
+	IDS_ERROR_ARB_PROFILE			"Invalid ARB profile"
+	IDS_ERROR_LOAD_RESOURCE			"Load resource failed"
+	IDS_ERROR_COMPILE_SHADER		"Compile shader failed"
+	IDS_INFO_RESTART				"In order for the changes to take effect, please restart the game"
+END
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU MENU DISCARDABLE
+BEGIN
+	POPUP "&File"
+	BEGIN
+		MENUITEM "&Quit",							IDM_FILE_QUIT
+	END
+	POPUP "&Display"
+	BEGIN
+		MENUITEM "Full &Screen\aF4",				IDM_RES_FULL_SCREEN
+		MENUITEM "Color &Depth\aF3",				IDM_RES_COLOR_DEPTH
+		POPUP "&Filtering\a"
+		BEGIN
+			MENUITEM "&Off",						IDM_FILT_OFF
+			MENUITEM "Bi&linear",					IDM_FILT_LINEAR
+			MENUITEM "Bi&cubic",					IDM_FILT_CUBIC
+			MENUITEM SEPARATOR
+			POPUP "&ScaleNx"
+			BEGIN
+				MENUITEM "+ Bi&linear",				IDM_FILT_SCALENX_LINEAR
+				MENUITEM "+ Bi&cubic",				IDM_FILT_SCALENX_CUBIC
+				MENUITEM SEPARATOR
+				MENUITEM "x2",						IDM_FILT_SCALENX_2X
+				MENUITEM "x3",						IDM_FILT_SCALENX_3X
+			END
+			POPUP "Super &Eagle"
+			BEGIN
+				MENUITEM "+ Bi&linear",				IDM_FILT_EAGLE_LINEAR
+				MENUITEM "+ Bi&cubic",				IDM_FILT_EAGLE_CUBIC
+				MENUITEM SEPARATOR
+				MENUITEM "x2",						IDM_FILT_EAGLE_2X
+			END
+			POPUP "2x&SaI"
+			BEGIN
+				MENUITEM "+ Bi&linear",				IDM_FILT_XSAL_LINEAR
+				MENUITEM "+ Bi&cubic",				IDM_FILT_XSAL_CUBIC
+				MENUITEM SEPARATOR
+				MENUITEM "x2",						IDM_FILT_XSAL_2X
+			END
+			POPUP "Scale&HQ"
+			BEGIN
+				MENUITEM "+ Bi&linear",				IDM_FILT_SCALEHQ_LINEAR
+				MENUITEM "+ Bi&cubic",				IDM_FILT_SCALEHQ_CUBIC
+				MENUITEM SEPARATOR
+				MENUITEM "x2",						IDM_FILT_SCALEHQ_2X
+				MENUITEM "x4",						IDM_FILT_SCALEHQ_4X
+			END
+			POPUP "&xBRz"
+			BEGIN
+				MENUITEM "+ Bi&linear",				IDM_FILT_XRBZ_LINEAR
+				MENUITEM "+ Bi&cubic",				IDM_FILT_XRBZ_CUBIC
+				MENUITEM SEPARATOR
+				MENUITEM "x2",						IDM_FILT_XRBZ_2X
+				MENUITEM "x3",						IDM_FILT_XRBZ_3X
+				MENUITEM "x4",						IDM_FILT_XRBZ_4X
+				MENUITEM "x5",						IDM_FILT_XRBZ_5X
+				MENUITEM "x6",						IDM_FILT_XRBZ_6X
+			END
+		END
+		MENUITEM "Keep &Aspect Ratio\a",			IDM_ASPECT_RATIO
+		MENUITEM "Enable &VSync\a",					IDM_VSYNC
+	END
+	POPUP "&Help"
+	BEGIN
+		MENUITEM "About &Application...\a",			IDM_HELP_ABOUT_APPLICATION
+		MENUITEM "About &Wrapper...\a",				IDM_HELP_ABOUT_WRAPPER
+	END
+END
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUT_APPLICATION DIALOGEX DISCARDABLE 22,17,162,74
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP
+FONT 8, "System", 0, 0, 0x1
+BEGIN
+	CTEXT			"",IDC_TITLE,0,6,162,18
+	CTEXT			"Version %d.%d.%d.%d",IDC_VERSION,0,22,162,8
+	CTEXT			"",IDC_COPYRIGHT,0,38,162,8
+	DEFPUSHBUTTON	"OK",IDC_BTN_OK,65,56,32,14,WS_GROUP
+	ICON			"",IDC_STATIC,8,17,20,20
+END
+
+IDD_ABOUT_WRAPPER DIALOGEX DISCARDABLE 22,17,162,90
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP
+FONT 8, "System", 0, 0, 0x1
+BEGIN
+	CTEXT			"Railroad Tycoon II\nOpenGL Wrapper",IDC_STATIC,0,6,162,18
+	CTEXT			"Version %d.%d%d   Build %d",IDC_VERSION,0,30,162,8
+	CTEXT			"Copyright © 2019 Verok",IDC_STATIC,0,48,162,8
+	DEFPUSHBUTTON	"OK",IDC_BTN_OK,65,72,32,14,WS_GROUP
+	CONTROL			"verokster@gmail.com",IDC_LNK_EMAIL,"SysLink",WS_TABSTOP,48,57,72,12
+	ICON			"",IDC_STATIC,8,17,20,20
+END
+
+IDD_ABOUT_WRAPPER_OLD DIALOGEX DISCARDABLE 22,17,162,90
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP
+FONT 8, "System", 0, 0, 0x1
+BEGIN
+	CTEXT			"Railroad Tycoon II\nOpenGL Wrapper",IDC_STATIC,0,6,162,18
+	CTEXT			"Version %d.%d%d   Build %d",IDC_VERSION,0,30,162,8
+	CTEXT			"Copyright © 2019 Verok",IDC_STATIC,0,48,162,8
+	DEFPUSHBUTTON	"OK",IDC_BTN_OK,65,72,32,14,WS_GROUP
+	CTEXT			"verokster@gmail.com",IDC_STATIC,48,57,72,12
+	ICON			"",IDC_STATIC,8,17,20,20
+END
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RCDATA
+//
+
+IDR_LINEAR_VERTEX			RCDATA		DISCARDABLE			"..\\glsl\\linear\\vertex.glsl"
+IDR_LINEAR_FRAGMENT			RCDATA		DISCARDABLE			"..\\glsl\\linear\\fragment.glsl"
+
+IDR_CUBIC_FRAGMENT			RCDATA		DISCARDABLE			"..\\glsl\\cubic\\fragment.glsl"
+
+IDR_XBRZ_FRAGMENT_2X		RCDATA		DISCARDABLE			"..\\glsl\\xbrz\\fragment_2x.glsl"
+IDR_XBRZ_FRAGMENT_3X		RCDATA		DISCARDABLE			"..\\glsl\\xbrz\\fragment_3x.glsl"
+IDR_XBRZ_FRAGMENT_4X		RCDATA		DISCARDABLE			"..\\glsl\\xbrz\\fragment_4x.glsl"
+IDR_XBRZ_FRAGMENT_5X		RCDATA		DISCARDABLE			"..\\glsl\\xbrz\\fragment_5x.glsl"
+IDR_XBRZ_FRAGMENT_6X		RCDATA		DISCARDABLE			"..\\glsl\\xbrz\\fragment_6x.glsl"
+
+IDR_XSAL_FRAGMENT			RCDATA		DISCARDABLE			"..\\glsl\\xsal\\fragment.glsl"
+
+IDR_EAGLE_FRAGMENT			RCDATA		DISCARDABLE			"..\\glsl\\eagle\\fragment.glsl"
+
+IDR_SCALEHQ_FRAGMENT_2X		RCDATA		DISCARDABLE			"..\\glsl\\scalehq\\fragment_2x.glsl"
+IDR_SCALEHQ_FRAGMENT_4X		RCDATA		DISCARDABLE			"..\\glsl\\scalehq\\fragment_4x.glsl"
+
+IDR_SCALENX_FRAGMENT_2X		RCDATA		DISCARDABLE			"..\\glsl\\scalenx\\fragment_2x.glsl"
+IDR_SCALENX_FRAGMENT_3X		RCDATA		DISCARDABLE			"..\\glsl\\scalenx\\fragment_3x.glsl"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 2019,5,13,54
+ PRODUCTVERSION 1,0,1,0
+ FILEFLAGSMASK 0x17L
+#ifdef _DEBUG
+ FILEFLAGS VS_FF_DEBUG
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS VOS__WINDOWS32
+ FILETYPE VFT_DLL
+ FILESUBTYPE VFT2_UNKNOWN
+BEGIN
+	BLOCK "StringFileInfo"
+	BEGIN
+		BLOCK "040904b0"
+		BEGIN
+			VALUE "FileDescription", "Railroad Tycoon II - OpenGL wrapper"
+			VALUE "FileVersion", "2019.05.13.054"
+			VALUE "LegalCopyright", "© 2019 Verok (verokster@gmail.com)"
+			VALUE "OriginalFilename", "WSOCK32.dll"
+			VALUE "ProductVersion", "1.0.1"
+			VALUE "ProductName", "RailroadGL"
+		END
+	END
+	BLOCK "VarFileInfo"
+	BEGIN
+		VALUE "Translation", 0x409, 1200
+	END
+END
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
