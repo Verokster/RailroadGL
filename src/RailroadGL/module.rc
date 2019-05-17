@@ -45,67 +45,269 @@ IDR_MENU MENU DISCARDABLE
 BEGIN
 	POPUP "&File"
 	BEGIN
-		MENUITEM "&Quit",							IDM_FILE_QUIT
+		MENUITEM "&Quit",												IDM_FILE_QUIT
 	END
 	POPUP "&Display"
 	BEGIN
-		MENUITEM "Full &Screen\aF4",				IDM_RES_FULL_SCREEN
-		MENUITEM "Color &Depth\aF3",				IDM_RES_COLOR_DEPTH
+		MENUITEM "Full &Screen\aF4",									IDM_RES_FULL_SCREEN
+		MENUITEM "Color &Depth\aF3",									IDM_RES_COLOR_DEPTH
 		POPUP "&Filtering\a"
 		BEGIN
-			MENUITEM "&Off",						IDM_FILT_OFF
-			MENUITEM "Bi&linear",					IDM_FILT_LINEAR
-			MENUITEM "Bi&cubic",					IDM_FILT_CUBIC
+			MENUITEM "&Off",											IDM_FILT_OFF
+			MENUITEM "Bi&linear",										IDM_FILT_LINEAR
+			MENUITEM "Bi&cubic",										IDM_FILT_CUBIC
 			MENUITEM SEPARATOR
 			POPUP "&ScaleNx"
 			BEGIN
-				MENUITEM "+ Bi&linear",				IDM_FILT_SCALENX_LINEAR
-				MENUITEM "+ Bi&cubic",				IDM_FILT_SCALENX_CUBIC
+				MENUITEM "+ Bi&linear",									IDM_FILT_SCALENX_LINEAR
+				MENUITEM "+ Bi&cubic",									IDM_FILT_SCALENX_CUBIC
 				MENUITEM SEPARATOR
-				MENUITEM "x2",						IDM_FILT_SCALENX_2X
-				MENUITEM "x3",						IDM_FILT_SCALENX_3X
+				MENUITEM "x2",											IDM_FILT_SCALENX_2X
+				MENUITEM "x3",											IDM_FILT_SCALENX_3X
 			END
 			POPUP "Super &Eagle"
 			BEGIN
-				MENUITEM "+ Bi&linear",				IDM_FILT_EAGLE_LINEAR
-				MENUITEM "+ Bi&cubic",				IDM_FILT_EAGLE_CUBIC
+				MENUITEM "+ Bi&linear",									IDM_FILT_EAGLE_LINEAR
+				MENUITEM "+ Bi&cubic",									IDM_FILT_EAGLE_CUBIC
 				MENUITEM SEPARATOR
-				MENUITEM "x2",						IDM_FILT_EAGLE_2X
+				MENUITEM "x2",											IDM_FILT_EAGLE_2X
 			END
 			POPUP "2x&SaI"
 			BEGIN
-				MENUITEM "+ Bi&linear",				IDM_FILT_XSAL_LINEAR
-				MENUITEM "+ Bi&cubic",				IDM_FILT_XSAL_CUBIC
+				MENUITEM "+ Bi&linear",									IDM_FILT_XSAL_LINEAR
+				MENUITEM "+ Bi&cubic",									IDM_FILT_XSAL_CUBIC
 				MENUITEM SEPARATOR
-				MENUITEM "x2",						IDM_FILT_XSAL_2X
+				MENUITEM "x2",											IDM_FILT_XSAL_2X
 			END
 			POPUP "Scale&HQ"
 			BEGIN
-				MENUITEM "+ Bi&linear",				IDM_FILT_SCALEHQ_LINEAR
-				MENUITEM "+ Bi&cubic",				IDM_FILT_SCALEHQ_CUBIC
+				MENUITEM "+ Bi&linear",									IDM_FILT_SCALEHQ_LINEAR
+				MENUITEM "+ Bi&cubic",									IDM_FILT_SCALEHQ_CUBIC
 				MENUITEM SEPARATOR
-				MENUITEM "x2",						IDM_FILT_SCALEHQ_2X
-				MENUITEM "x4",						IDM_FILT_SCALEHQ_4X
+				MENUITEM "x2",											IDM_FILT_SCALEHQ_2X
+				MENUITEM "x4",											IDM_FILT_SCALEHQ_4X
 			END
 			POPUP "&xBRz"
 			BEGIN
-				MENUITEM "+ Bi&linear",				IDM_FILT_XRBZ_LINEAR
-				MENUITEM "+ Bi&cubic",				IDM_FILT_XRBZ_CUBIC
+				MENUITEM "+ Bi&linear",									IDM_FILT_XRBZ_LINEAR
+				MENUITEM "+ Bi&cubic",									IDM_FILT_XRBZ_CUBIC
 				MENUITEM SEPARATOR
-				MENUITEM "x2",						IDM_FILT_XRBZ_2X
-				MENUITEM "x3",						IDM_FILT_XRBZ_3X
-				MENUITEM "x4",						IDM_FILT_XRBZ_4X
-				MENUITEM "x5",						IDM_FILT_XRBZ_5X
-				MENUITEM "x6",						IDM_FILT_XRBZ_6X
+				MENUITEM "x2",											IDM_FILT_XRBZ_2X
+				MENUITEM "x3",											IDM_FILT_XRBZ_3X
+				MENUITEM "x4",											IDM_FILT_XRBZ_4X
+				MENUITEM "x5",											IDM_FILT_XRBZ_5X
+				MENUITEM "x6",											IDM_FILT_XRBZ_6X
 			END
 		END
-		MENUITEM "Keep &Aspect Ratio\a",			IDM_ASPECT_RATIO
-		MENUITEM "Enable &VSync\a",					IDM_VSYNC
+		MENUITEM "Keep &Aspect Ratio\a",								IDM_ASPECT_RATIO
+		MENUITEM "Enable &VSync\a",										IDM_VSYNC
+	END
+	POPUP "&Debug"
+	BEGIN
+		POPUP "Screen Shots"
+		BEGIN
+			MENUITEM "Full Screen 8 Bit .PCX",							44000
+			MENUITEM "Full Screen 24 Bit .PCX",  44001
+			MENUITEM "Multi-Screen 2 wide by 4  high 24 Bit .PCX",		44002
+			MENUITEM "Multi-Screen 3 wide by 6  high 24 Bit .PCX",		44003
+			MENUITEM "Multi-Screen 4 wide by 8  high 24 Bit .PCX",		44004
+			MENUITEM "Multi-Screen 5 wide by 10 high 24 Bit .PCX",		44005
+			MENUITEM "Multi-Screen 6 wide by 12 high 24 Bit .PCX",		44006
+		END
+		MENUITEM "Reset the tutorial",									44100
+		MENUITEM "Map editor mode",										42006
+		MENUITEM "Allow any engine to be purchased",					42014
+		MENUITEM "Allow any building to be purchased",					42019
+		MENUITEM "Always allow electric track to be purchased",			42020
+		POPUP "Bridge availability"
+		BEGIN
+			MENUITEM "Default",											42370
+			MENUITEM "Wood Only",										42371
+			MENUITEM "Wood and Stone",									42372
+			MENUITEM "All Types",										42373
+		END
+		MENUITEM "Frame Rate Monitor",									42021
+		MENUITEM "Memory Usage Monitor",								42016
+		MENUITEM "Skip Opening Video",									42001
+		MENUITEM "Show smacker statistics",								42010
+		MENUITEM "Show multiplayer statistics",							42011
+		MENUITEM "Network Debug Mode",									42026
+		MENUITEM "Network Ignore Heartbeats",							42027
+		MENUITEM "Draw dirty rectangles",								42005
+		MENUITEM "Draw window solid rectangles",						42024
+		MENUITEM "Highlight Object Squares",							42004
+		MENUITEM "Show text rectangles",								42023
+		MENUITEM "Allow out of order campaign",							42028
+		POPUP "Draw control rectangles"
+		BEGIN
+			MENUITEM "None",											42008
+			MENUITEM "All",												42009
+			MENUITEM SEPARATOR
+			MENUITEM "Button",											42050
+			MENUITEM "Text",											42051
+			MENUITEM "Picture",											42052
+			MENUITEM "List Box",										42053
+			MENUITEM "Map Section",										42054
+			MENUITEM "Radar Section",									42055
+			MENUITEM "Smack Section",									42056
+			MENUITEM "Zone",											42057
+			MENUITEM "Check Box",										42058
+		END
+		POPUP "Simulate Extra Lag"
+		BEGIN
+			MENUITEM "   None",											42380
+			MENUITEM " 100 ms",											42381
+			MENUITEM " 300 ms",											42382
+			MENUITEM " 700 ms",											42383
+			MENUITEM "1500 ms",											42384
+			MENUITEM "3000 ms",											42385
+		END
+		POPUP "Simulate Extra Packet Loss"
+		BEGIN
+			MENUITEM " None",											42390
+			MENUITEM " 0.1%",											42391
+			MENUITEM " 1.0%",											42392
+			MENUITEM " 5.0%",											42393
+			MENUITEM "10.0%",											42394
+			MENUITEM "25.0%",											42395
+			MENUITEM "50.0%",											42396
+		END
+		POPUP "Simulate Limited Throughput"
+		BEGIN
+			MENUITEM "None",  42400
+			MENUITEM "128   Kbps connection (115 Kbps throughput)",		42401
+			MENUITEM " 56   Kbps connection ( 45 Kbps throughput)",		42402
+			MENUITEM " 28.8 Kbps connection ( 22 Kbps throughput)",		42403
+			MENUITEM " 14.4 Kbps connection ( 12 Kbps throughput)",		42404
+		END
+		POPUP "Test Variable 1"
+		BEGIN
+			MENUITEM "Value 0",											42210
+			MENUITEM "Value 1",											42211
+			MENUITEM "Value 2",											42212
+			MENUITEM "Value 3",											42213
+			MENUITEM "Value 4",											42214
+			MENUITEM "Value 5",											42215
+			MENUITEM "Value 6",											42216
+			MENUITEM "Value 7",											42217
+			MENUITEM "Value 8",											42218
+			MENUITEM "Value 9",											42219
+			MENUITEM "Value 10",										42220
+			MENUITEM "Value 11",										42221
+			MENUITEM "Value 12",										42222
+			MENUITEM "Value 13",										42223
+			MENUITEM "Value 14",										42224
+			MENUITEM "Value 15",										42225
+			MENUITEM "Value 16",										42226
+			MENUITEM "Value 17",										42227
+			MENUITEM "Value 18",										42228
+			MENUITEM "Value 19",										42229
+		END
+		POPUP "Test Variable 2"
+		BEGIN
+			MENUITEM "Value 0",											42250
+			MENUITEM "Value 1",											42251
+			MENUITEM "Value 2",											42252
+			MENUITEM "Value 3",											42253
+			MENUITEM "Value 4",											42254
+			MENUITEM "Value 5",											42255
+			MENUITEM "Value 6",											42256
+			MENUITEM "Value 7",											42257
+			MENUITEM "Value 8",											42258
+			MENUITEM "Value 9",											42259
+			MENUITEM "Value 10",										42260
+			MENUITEM "Value 11",										42261
+			MENUITEM "Value 12",										42262
+			MENUITEM "Value 13",										42263
+			MENUITEM "Value 14",										42264
+			MENUITEM "Value 15",										42265
+			MENUITEM "Value 16",										42266
+			MENUITEM "Value 17",										42267
+			MENUITEM "Value 18",										42268
+			MENUITEM "Value 19",										42269
+		END
+		POPUP "&Station Detail"
+		BEGIN
+			POPUP "&Buildings"
+			BEGIN
+				MENUITEM "Add all buildings",							44300
+				MENUITEM "Remove all buildings",						44301
+				MENUITEM SEPARATOR
+				MENUITEM "Small Station",								44310
+				MENUITEM "Medium Station",								44311
+				MENUITEM "Large Station",								44312
+				MENUITEM "Telephone Poles",								44313
+				MENUITEM "Telegraph Poles",								44314
+				MENUITEM "Small Restaurant",							44315
+				MENUITEM "Large Restaurant",							44316
+				MENUITEM "Saloon",										44317
+				MENUITEM "Post Office",									44318
+				MENUITEM "Customs House",								44319
+				MENUITEM "Sanding Tower",								44320
+				MENUITEM "Water Tower",									44321
+				MENUITEM "Turntable",									44322
+				MENUITEM "Second Track Line",							44323
+				MENUITEM "Main Track Line",								44324
+				MENUITEM "Large Hotel",									44325
+				MENUITEM "Small Hotel",									44326
+				MENUITEM "Liquid Storage",								44327
+				MENUITEM "Refrigerated Storage",						44328
+				MENUITEM "Grain Silo",									44329
+				MENUITEM "Warehouse",									44330
+				MENUITEM "Roundhouse",									44331
+				MENUITEM "Engine Shop",									44332
+			END
+			POPUP "&Architecture"
+			BEGIN
+				MENUITEM "Victorian",									44400
+				MENUITEM "Colonial ",									44401
+				MENUITEM "Mission Revival",								44402
+				MENUITEM "Tudor",										44403
+				MENUITEM "Byzantine",									44404
+				MENUITEM "Kyoto Revival",								44405
+			END
+			POPUP "&Landscape"
+			BEGIN
+				MENUITEM "Landscape 1",									44380
+				MENUITEM "Landscape 2",									44381
+				MENUITEM "Landscape 3",									44382
+				MENUITEM "Landscape 4",									44383
+				MENUITEM "Landscape 5",									44384
+				MENUITEM "Landscape 6",									44385
+				MENUITEM "Landscape 7",									44386
+				MENUITEM "Landscape 8",									44387
+			END
+		END
+		MENUITEM SEPARATOR
+		MENUITEM "Export Scenario Text",								44101
+		MENUITEM "Import Scenario Text",								44102
+		MENUITEM SEPARATOR
+		MENUITEM "AddPlayer",											41300
+		MENUITEM "Switch Control To Next Player",						41301
+		MENUITEM "AddCompany",											41302
+		MENUITEM "Switch Control To Next Company",						41303
+		MENUITEM SEPARATOR
+		POPUP "Set artificially low bit depth"
+		BEGIN
+			MENUITEM "1 bit  per channel",								44200
+			MENUITEM "2 bits per channel",								44201
+			MENUITEM "3 bits per channel",								44202
+			MENUITEM "4 bits per channel",								44203
+			MENUITEM "5 bits per channel",								44204
+		END
+		MENUITEM SEPARATOR
+		MENUITEM "Disable building fizzle",								42018
+		MENUITEM "Draw polygon lines",									42003
+		MENUITEM "Show In-game Videos",									42007
+		MENUITEM "Dim out track owned by other companies",				42012
 	END
 	POPUP "&Help"
 	BEGIN
-		MENUITEM "About &Application...\a",			IDM_HELP_ABOUT_APPLICATION
-		MENUITEM "About &Wrapper...\a",				IDM_HELP_ABOUT_WRAPPER
+		MENUITEM "On Line &Manual",										41600
+		MENUITEM "About",												41601
+		MENUITEM SEPARATOR
+		MENUITEM "About &Application...\a",								IDM_HELP_ABOUT_APPLICATION
+		MENUITEM "About &Wrapper...\a",									IDM_HELP_ABOUT_WRAPPER
 	END
 END
 
@@ -181,7 +383,7 @@ IDR_SCALENX_FRAGMENT_3X		RCDATA		DISCARDABLE			"..\\glsl\\scalenx\\fragment_3x.g
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2019,5,13,54
+ FILEVERSION 2019,5,17,55
  PRODUCTVERSION 1,0,1,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
@@ -198,7 +400,7 @@ BEGIN
 		BLOCK "040904b0"
 		BEGIN
 			VALUE "FileDescription", "Railroad Tycoon II - OpenGL wrapper"
-			VALUE "FileVersion", "2019.05.13.054"
+			VALUE "FileVersion", "2019.05.17.055"
 			VALUE "LegalCopyright", "© 2019 Verok (verokster@gmail.com)"
 			VALUE "OriginalFilename", "WSOCK32.dll"
 			VALUE "ProductVersion", "1.0.1"
