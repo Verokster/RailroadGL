@@ -78,7 +78,7 @@ namespace Config
 		HMODULE hModule = GetModuleHandle(NULL);
 
 		GetModuleFileName(hModule, config.file, MAX_PATH - 1);
-		CHAR * p = StrLastChar(config.file, '.');
+		CHAR* p = StrLastChar(config.file, '.');
 		*p = NULL;
 		StrCopy(p, ".ini");
 
@@ -96,31 +96,17 @@ namespace Config
 			config.image.filter = FilterCubic;
 			Config::Set(CONFIG_WRAPPER, "ImageFilter", *(INT*)&config.image.filter);
 
-			config.image.scaleNx.value = 2;
-			Config::Set(CONFIG_WRAPPER, "ImageScaleNx", *(INT*)&config.image.scaleNx);
-
-			config.image.xSal.value = 2;
-			Config::Set(CONFIG_WRAPPER, "ImageXSal", *(INT*)&config.image.xSal);
-
-			config.image.eagle.value = 2;
-			Config::Set(CONFIG_WRAPPER, "ImageEagle", *(INT*)&config.image.eagle);
-
-			config.image.scaleHQ.value = 2;
-			Config::Set(CONFIG_WRAPPER, "ImageScaleHQ", *(INT*)&config.image.scaleHQ);
-
-			config.image.xBRz.value = 2;
-			Config::Set(CONFIG_WRAPPER, "ImageXBRZ", *(INT*)&config.image.xBRz);
-
 			config.keys.fpsCounter = 1;
 			Config::Set(CONFIG_KEYS, "FpsCounter", config.keys.fpsCounter);
+
+			config.keys.windowedMode = 4;
+			Config::Set(CONFIG_KEYS, "WindowedMode", config.keys.windowedMode);
 
 			config.keys.imageFilter = 2;
 			Config::Set(CONFIG_KEYS, "ImageFilter", config.keys.imageFilter);
 
 			Config::Set(CONFIG_KEYS, "AspectRatio", "");
 			Config::Set(CONFIG_KEYS, "VSync", "");
-
-			Config::Set(CONFIG_KEYS, "AlwaysActive", "");
 		}
 		else
 		{
@@ -129,43 +115,8 @@ namespace Config
 
 			INT value = Config::Get(CONFIG_WRAPPER, "ImageFilter", FilterCubic);
 			config.image.filter = *(ImageFilter*)&value;
-			if (config.image.filter < FilterNearest || config.image.filter > FilterScaleNx)
-				config.image.filter = FilterCubic;
-
-			value = Config::Get(CONFIG_WRAPPER, "ImageScaleNx", 2);
-			config.image.scaleNx = *(FilterType*)&value;
-			if (config.image.scaleNx.value != 2 && config.image.scaleNx.value != 3)
-				config.image.scaleNx.value = 2;
-			if (config.image.scaleNx.type & 0xFE)
-				config.image.scaleNx.type = 0;
-
-			value = Config::Get(CONFIG_WRAPPER, "ImageXSal", 2);
-			config.image.xSal = *(FilterType*)&value;
-			if (config.image.xSal.value != 2)
-				config.image.xSal.value = 2;
-			if (config.image.xSal.type & 0xFE)
-				config.image.xSal.type = 0;
-
-			value = Config::Get(CONFIG_WRAPPER, "ImageEagle", 2);
-			config.image.eagle = *(FilterType*)&value;
-			if (config.image.eagle.value != 2)
-				config.image.eagle.value = 2;
-			if (config.image.eagle.type & 0xFE)
-				config.image.eagle.type = 0;
-
-			value = Config::Get(CONFIG_WRAPPER, "ImageScaleHQ", 2);
-			config.image.scaleHQ = *(FilterType*)&value;
-			if (config.image.scaleHQ.value != 2 && config.image.scaleHQ.value != 4)
-				config.image.scaleHQ.value = 2;
-			if (config.image.scaleHQ.type & 0xFE)
-				config.image.scaleHQ.type = 0;
-
-			value = Config::Get(CONFIG_WRAPPER, "ImageXBRZ", 2);
-			config.image.xBRz = *(FilterType*)&value;
-			if (config.image.xBRz.value < 2 || config.image.xBRz.value > 6)
-				config.image.xBRz.value = 6;
-			if (config.image.xBRz.type & 0xFE)
-				config.image.xBRz.type = 0;
+			if (config.image.filter < FilterNearest || config.image.filter > FilterCubic)
+				config.image.filter = FilterHermite;
 
 			CHAR buffer[20];
 			if (Config::Get(CONFIG_KEYS, "FpsCounter", "", buffer, sizeof(buffer)))
@@ -174,6 +125,14 @@ namespace Config
 				config.keys.fpsCounter = LOBYTE(value);
 				if (config.keys.fpsCounter > 1 && config.keys.fpsCounter > 24)
 					config.keys.fpsCounter = 0;
+			}
+
+			if (Config::Get(CONFIG_KEYS, "WindowedMode", "", buffer, sizeof(buffer)))
+			{
+				value = Config::Get(CONFIG_KEYS, "WindowedMode", 0);
+				config.keys.windowedMode = LOBYTE(value);
+				if (config.keys.windowedMode > 1 && config.keys.windowedMode > 24)
+					config.keys.windowedMode = 0;
 			}
 
 			if (Config::Get(CONFIG_KEYS, "ImageFilter", "", buffer, sizeof(buffer)))
@@ -207,17 +166,6 @@ namespace Config
 			DEFAULT_PITCH | FF_DONTCARE, TEXT("MS Shell Dlg"));
 		config.icon = LoadIcon(hModule, "IHS");
 
-		HMODULE hLibrary = LoadLibrary("NTDLL.dll");
-		if (hLibrary)
-		{
-			if (GetProcAddress(hLibrary, "wine_get_version"))
-				config.singleWindow = TRUE;
-			FreeLibrary(hLibrary);
-		}
-
-		if (!config.singleWindow)
-			config.singleWindow = Config::Get(CONFIG_WRAPPER, "SingleWindow", FALSE);
-
 		CHAR buffer[256];
 		MENUITEMINFO info;
 		MemoryZero(&info, sizeof(MENUITEMINFO));
@@ -225,6 +173,12 @@ namespace Config
 		info.fMask = MIIM_TYPE;
 		info.fType = MFT_STRING;
 		info.dwTypeData = buffer;
+
+		if (config.keys.windowedMode && (info.cch = sizeof(buffer), GetMenuItemInfo(config.menu, IDM_RES_FULL_SCREEN, FALSE, &info)))
+		{
+			StrPrint(buffer, "%sF%d", buffer, config.keys.windowedMode);
+			SetMenuItemInfo(config.menu, IDM_RES_FULL_SCREEN, FALSE, &info);
+		}
 
 		if (config.keys.aspectRatio && (info.cch = sizeof(buffer), GetMenuItemInfo(config.menu, IDM_ASPECT_RATIO, FALSE, &info)))
 		{
@@ -249,12 +203,28 @@ namespace Config
 			}
 		}
 
+		HMODULE hLibrary = LoadLibrary("NTDLL.dll");
+		if (hLibrary)
+		{
+			if (GetProcAddress(hLibrary, "wine_get_version"))
+				config.singleWindow = TRUE;
+			FreeLibrary(hLibrary);
+		}
+
+		DWORD processMask, systemMask;
+		HANDLE process = GetCurrentProcess();
+		if (GetProcessAffinityMask(process, &processMask, &systemMask))
+		{
+			if (processMask != systemMask && SetProcessAffinityMask(process, systemMask))
+				GetProcessAffinityMask(process, &processMask, &systemMask);
+		}
+
 		return TRUE;
 	}
 
 	INT __fastcall Get(const CHAR* app, const CHAR* key, INT default)
 	{
-		return GetPrivateProfileInt(app, key, (INT)default, config.file);
+		return GetPrivateProfileInt(app, key, (INT) default, config.file);
 	}
 
 	DWORD __fastcall Get(const CHAR* app, const CHAR* key, CHAR* default, CHAR* returnString, DWORD nSize)

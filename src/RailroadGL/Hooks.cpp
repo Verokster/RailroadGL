@@ -42,6 +42,35 @@ namespace Hooks
 
 #pragma region Hook helpers
 #pragma optimize("s", on)
+	BOOL __fastcall PatchRedirect(DWORD addr, VOID* hook, BYTE instruction, DWORD nop)
+	{
+		DWORD address = addr + baseOffset;
+
+		DWORD size = instruction == 0xEB ? 2 : 5;
+
+		DWORD old_prot;
+		if (VirtualProtect((VOID*)address, size + nop, PAGE_EXECUTE_READWRITE, &old_prot))
+		{
+			BYTE* jump = (BYTE*)address;
+			*jump = instruction;
+			++jump;
+			*(DWORD*)jump = (DWORD)hook - (DWORD)address - size;
+
+			if (nop)
+				MemorySet((VOID*)(address + size), 0x90, nop);
+
+			VirtualProtect((VOID*)address, size + nop, old_prot, &old_prot);
+
+			return TRUE;
+		}
+		return FALSE;
+	}
+
+	BOOL __fastcall PatchHook(DWORD addr, VOID* hook, DWORD nop = 0)
+	{
+		return PatchRedirect(addr, hook, 0xE9, nop);
+	}
+
 	BOOL __fastcall PatchBlock(DWORD addr, VOID* block, DWORD size)
 	{
 		DWORD address = addr + baseOffset;
@@ -209,6 +238,16 @@ namespace Hooks
 		}
 
 		return res;
+	}
+
+	DWORD __fastcall PatchEntryPoint(const CHAR* library, VOID* entryPoint)
+	{
+		DWORD base = (DWORD)GetModuleHandle(library);
+		if (!base)
+			return FALSE;
+
+		PIMAGE_NT_HEADERS headNT = (PIMAGE_NT_HEADERS)((BYTE*)base + ((PIMAGE_DOS_HEADER)base)->e_lfanew);
+		return PatchHook(base + headNT->OptionalHeader.AddressOfEntryPoint, entryPoint);
 	}
 #pragma optimize("", on)
 #pragma endregion
@@ -455,12 +494,25 @@ namespace Hooks
 			return GetProcAddress(hModule, lpProcName);
 	}
 
+	BOOL __stdcall FakeEntryPoint(HMODULE hModule, DWORD fdwReason, LPVOID lpReserved)
+	{
+		return TRUE;
+	}
+
 #pragma optimize("s", on)
 	VOID Load()
 	{
 		hModule = GetModuleHandle(NULL);
 		PIMAGE_NT_HEADERS headNT = (PIMAGE_NT_HEADERS)((BYTE*)hModule + ((PIMAGE_DOS_HEADER)hModule)->e_lfanew);
 		baseOffset = (INT)hModule - (INT)headNT->OptionalHeader.ImageBase;
+
+		{
+			CHAR path[MAX_PATH];
+			GetModuleFileName(hModule, path, MAX_PATH - 1);
+			CHAR* p = StrLastChar(path, '\\');
+			StrCopy(p + 1, "DDRAW.dll");
+			PatchEntryPoint(path, FakeEntryPoint);
+		}
 
 		{
 			MappedFile file = { hModule, NULL, NULL, NULL };
@@ -499,6 +551,10 @@ namespace Hooks
 
 			if (file.hFile)
 				CloseHandle(file.hFile);
+
+			//Cursor timeout fix
+			//PatchByte(0x00468D46 + 2, 1);
+			//PatchByte(0x00461311 + 2, 1);
 		}
 	}
 #pragma optimize("", on)

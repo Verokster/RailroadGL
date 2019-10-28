@@ -1,7 +1,7 @@
 /*
-	ScaleNx fragment shader
-	based on libretro ScaleNx shader
-	https://github.com/libretro/glsl-shaders/blob/master/scalenx/shaders
+	Cubic fragment shader
+	based on libretro Cubic shader
+	https://github.com/libretro/glsl-shaders/tree/master/cubic/shaders
 
 	MIT License
 
@@ -26,43 +26,20 @@
 	SOFTWARE.
 */
 
-precision mediump float;
-
 uniform sampler2D tex01;
-uniform sampler2D tex02;
-uniform vec2 texSize;
 
-in vec2 fTexCoord;
+#if __VERSION__ >= 130
+	#define COMPAT_IN in
+	#define COMPAT_TEXTURE texture
+	out vec4 FRAG_COLOR;
+#else
+	#define COMPAT_IN varying 
+	#define COMPAT_TEXTURE texture2D
+	#define FRAG_COLOR gl_FragColor
+#endif
 
-out vec4 fragColor;
-
-bool eq(vec3 A, vec3 B) {
-	return (A==B);
-}
-
-bool neq(vec3 A, vec3 B) {
-	return (A!=B);
-}
+COMPAT_IN vec2 fTex;
 
 void main() {
-	if (texture(tex01, fTexCoord) == texture(tex02, fTexCoord))
-		discard;
-
-	vec2 texel = floor(fTexCoord * texSize) + 0.5;
-
-	#define TEX(x, y) texture(tex01, (texel + vec2(x, y)) / texSize).rgb
-
-	vec3 B = TEX( 0.0, -1.0);
-	vec3 D = TEX(-1.0,  0.0);
-	vec3 E = TEX( 0.0,  0.0);
-	vec3 F = TEX( 1.0,  0.0);
-	vec3 H = TEX( 0.0,  1.0);
-
-	vec3 E0 = eq(B,D) ? B : E;
-	vec3 E1 = eq(B,F) ? B : E;
-	vec3 E2 = eq(H,D) ? H : E;
-	vec3 E3 = eq(H,F) ? H : E;
-
-	vec2 fp = floor(2.0 * fract(fTexCoord * texSize));
-	fragColor = vec4(neq(B,H) && neq(D,F) ? (fp.y == 0. ? (fp.x == 0. ? E0 : E1) : (fp.x == 0. ? E2 : E3)) : E, 1.0);
+	FRAG_COLOR = COMPAT_TEXTURE(tex01, fTex);
 }

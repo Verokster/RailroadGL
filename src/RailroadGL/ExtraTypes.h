@@ -26,28 +26,24 @@
 #include "windows.h"
 #include "GLib.h"
 
-struct Rect
-{
+struct Rect {
 	INT x;
 	INT y;
 	INT width;
 	INT height;
 };
 
-struct VecSize
-{
+struct VecSize {
 	INT width;
 	INT height;
 };
 
-struct TexSize
-{
+struct TexSize {
 	FLOAT width;
 	FLOAT height;
 };
 
-struct Frame
-{
+struct Frame {
 	GLuint id;
 	Rect rect;
 	POINT point;
@@ -55,8 +51,7 @@ struct Frame
 	TexSize tSize;
 };
 
-struct Viewport
-{
+struct Viewport {
 	BOOL refresh;
 	INT width;
 	INT height;
@@ -69,28 +64,21 @@ enum ImageFilter
 {
 	FilterNearest = 0,
 	FilterLinear = 1,
-	FilterCubic = 2,
-	FilterXRBZ = 3,
-	FilterScaleHQ = 4,
-	FilterXSal = 5,
-	FilterEagle = 6,
-	FilterScaleNx = 7
+	FilterHermite = 2,
+	FilterCubic = 3
 };
 
-struct FilterType
-{
-	WORD value;
-	WORD type;
-};
-
-struct Resolution
-{
+struct Resolution {
 	WORD width;
 	WORD height;
 };
 
-struct DisplayMode
-{
+struct Size {
+	DWORD width;
+	DWORD height;
+};
+
+struct DisplayMode {
 	DWORD width;
 	DWORD height;
 	DWORD bpp;
@@ -103,13 +91,11 @@ enum FpsState
 	FpsBenchmark
 };
 
-struct ShaderProgram
-{
+struct ShaderProgram {
 	GLuint id;
 	const CHAR* version;
 	DWORD vertexName;
 	DWORD fragmentName;
-	GLfloat* mvp;
 	struct {
 		GLint location;
 		DWORD value;
@@ -123,34 +109,29 @@ enum WindowState
 	StateWindowed = 2
 };
 
-struct ConfigItems
-{
+struct ConfigItems {
 	WindowState windowState;
 	const DisplayMode* mode;
 	Resolution resolution;
-	
+
 	HCURSOR cursor;
 	HMENU menu;
 	HICON icon;
 	HFONT font;
-	BOOL singleWindow;
 	BOOL isPlatinum;
+	BOOL singleWindow;
 	WINDOWPLACEMENT windowPlacement;
 
 	struct {
 		BOOL aspect;
 		BOOL vSync;
 		ImageFilter filter;
-		FilterType scaleNx;
-		FilterType xSal;
-		FilterType eagle;
-		FilterType scaleHQ;
-		FilterType xBRz;
 	} image;
 
 	struct {
 		BYTE fpsCounter;
 		BYTE imageFilter;
+		BYTE windowedMode;
 		BYTE aspectRatio;
 		BYTE vSync;
 	} keys;
@@ -159,8 +140,7 @@ struct ConfigItems
 	CHAR file[MAX_PATH];
 };
 
-struct MappedFile
-{
+struct MappedFile {
 	HMODULE hModule;
 	HANDLE hFile;
 	HANDLE hMap;
@@ -174,15 +154,21 @@ enum SurfaceType
 	SurfaceOther
 };
 
-struct MenuItemData
-{
+struct MenuItemData {
 	HMENU hParent;
 	INT index;
 	UINT childId;
 };
 
-struct ResourceStream
-{
+struct ResourceStream {
 	VOID* data;
 	DWORD position;
+};
+
+enum MenuType
+{
+	MenuAspect,
+	MenuVSync,
+	MenuFiltering,
+	MenuWindowMode
 };

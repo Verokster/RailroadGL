@@ -1,4 +1,8 @@
 /*
+	Cubic fragment shader
+	based on libretro Cubic shader
+	https://github.com/libretro/glsl-shaders/tree/master/cubic/shaders
+
 	MIT License
 
 	Copyright (c) 2019 Oleksiy Ryabchun
@@ -22,22 +26,20 @@
 	SOFTWARE.
 */
 
-uniform mat4 mvp;
-
 #if __VERSION__ >= 130
 	#define COMPAT_IN in
 	#define COMPAT_OUT out
-	precision mediump float;
 #else
 	#define COMPAT_IN attribute 
 	#define COMPAT_OUT varying 
 #endif
 
-COMPAT_IN vec2 vCoord;
-COMPAT_IN vec2 vTexCoord;
-COMPAT_OUT vec2 fTexCoord;
+COMPAT_IN vec4 vCoord;
+COMPAT_IN vec2 vTex;
+
+COMPAT_OUT vec2 fTex;
 
 void main() {
-	gl_Position = mvp * vec4(vCoord, 0.0, 1.0);
-	fTexCoord = vTexCoord;
+	gl_Position = vCoord;
+	fTex = vTex;
 }

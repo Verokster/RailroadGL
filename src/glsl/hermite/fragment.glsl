@@ -1,7 +1,7 @@
 /*
-	xSal fragment shader
-	based on libretro xSal shader
-	https://github.com/libretro/glsl-shaders/tree/master/xsal/shaders
+	Cubic fragment shader
+	based on libretro Cubic shader
+	https://github.com/libretro/glsl-shaders/tree/master/cubic/shaders
 
 	MIT License
 
@@ -26,30 +26,32 @@
 	SOFTWARE.
 */
 
-precision mediump float;
-
 uniform sampler2D tex01;
-uniform sampler2D tex02;
 uniform vec2 texSize;
 
-in vec2 fTexCoord;
+#if __VERSION__ >= 130
+	#define COMPAT_IN in
+	#define COMPAT_TEXTURE texture
+	out vec4 FRAG_COLOR;
+#else
+	#define COMPAT_IN varying 
+	#define COMPAT_TEXTURE texture2D
+	#define FRAG_COLOR gl_FragColor
+#endif
 
-out vec4 fragColor;
+COMPAT_IN vec2 fTex;
+
+vec4 hermite(sampler2D tex, vec2 coord)
+{
+	vec2 uv = coord * texSize - 0.5;
+	vec2 texel = floor(uv) + 0.5;
+	vec2 t = fract(uv);
+
+	uv = texel + t * t * t * (t * (t * 6.0 - 15.0) + 10.0);
+
+	return COMPAT_TEXTURE(tex, uv / texSize);
+}
 
 void main() {
-	if (texture(tex01, fTexCoord) == texture(tex02, fTexCoord))
-		discard;
-
-	#define TEX(x, y) texture(tex01, (floor(fTexCoord * texSize + vec2(x, y)) + 0.5) / texSize).rgb
-
-	vec3 c00 = TEX(-0.25, -0.25);
-	vec3 c20 = TEX( 0.25, -0.25);
-	vec3 c02 = TEX(-0.25,  0.25);
-	vec3 c22 = TEX( 0.25,  0.25);
-
-	vec3 dt = vec3(1.0, 1.0, 1.0);
-	float m1 = dot(abs(c00 - c22), dt) + 0.001;
-	float m2 = dot(abs(c02 - c20), dt) + 0.001;
-
-	fragColor = vec4((m1*(c02 + c20) + m2*(c22 + c00))/(2.0*(m1 + m2)), 1.0);
+	FRAG_COLOR = hermite(tex01, fTex);
 }

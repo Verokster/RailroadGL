@@ -32,6 +32,8 @@ RELEASEACTCTX ReleaseActCtxC;
 ACTIVATEACTCTX ActivateActCtxC;
 DEACTIVATEACTCTX DeactivateActCtxC;
 
+SETPROCESSDPIAWARENESS SetProcessDpiAwarenessC;
+
 FARPROC _accept;
 FARPROC _bind;
 FARPROC _closesocket;
@@ -341,4 +343,11 @@ VOID LoadWSock32()
 			_GetAcceptExSockaddrs = GetProcAddress(hLib, "GetAcceptExSockaddrs");
 		}
 	}
+}
+
+VOID LoadShcore()
+{
+	HMODULE hLib = LoadLibrary("SHCORE.dll");
+	if (hLib)
+		SetProcessDpiAwarenessC = (SETPROCESSDPIAWARENESS)GetProcAddress(hLib, "SetProcessDpiAwareness");
 }

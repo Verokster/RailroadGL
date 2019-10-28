@@ -24,6 +24,7 @@
 
 #include "stdafx.h"
 #include "Hooks.h"
+#include "Mmsystem.h"
 #include "GLib.h"
 #include "Main.h"
 #include "Config.h"
@@ -74,6 +75,10 @@ BOOL __stdcall DllMain(HMODULE hModule, DWORD fdwReason, LPVOID lpReserved)
 				actCtx.dwFlags = ACTCTX_FLAG_HMODULE_VALID | ACTCTX_FLAG_RESOURCE_NAME_VALID;
 				hActCtx = CreateActCtxC(&actCtx);
 			}
+
+			LoadShcore();
+			if (SetProcessDpiAwarenessC)
+				SetProcessDpiAwarenessC(PROCESS_PER_MONITOR_DPI_AWARE);
 		}
 		else
 			hDllModule = NULL;
@@ -89,7 +94,6 @@ BOOL __stdcall DllMain(HMODULE hModule, DWORD fdwReason, LPVOID lpReserved)
 				ReleaseActCtxC(hActCtx);
 
 			UnregisterClass(WC_DRAW, hDllModule);
-			GL::Free();
 			ClipCursor(NULL);
 			Window::SetCaptureKeys(FALSE);
 		}
@@ -97,7 +101,8 @@ BOOL __stdcall DllMain(HMODULE hModule, DWORD fdwReason, LPVOID lpReserved)
 		break;
 	}
 
-	default: break;
+	default:
+		break;
 	}
 	return TRUE;
 }

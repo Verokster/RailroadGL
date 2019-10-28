@@ -29,8 +29,7 @@
 #include "OpenDrawClipper.h"
 #include "OpenDrawPalette.h"
 
-class OpenDraw : public IDraw
-{
+class OpenDraw : public IDraw {
 public:
 	OpenDrawSurface* surfaceEntries;
 	OpenDrawClipper* clipperEntries;
@@ -38,12 +37,13 @@ public:
 
 	OpenDrawSurface* attachedSurface;
 
-	HWND hDraw;
 	HDC hDc;
 	HWND hWnd;
+	HWND hDraw;
 
 	HANDLE hDrawThread;
 	HANDLE hDrawEvent;
+	HANDLE hCheckEvent;
 
 	Viewport viewport;
 	DWORD clearStage;
@@ -62,9 +62,8 @@ public:
 	VOID RenderStop();
 
 	VOID RenderOld();
-	VOID RenderMid();
 	VOID RenderNew();
-	VOID TakeSnapshot(VOID*, DWORD, DWORD);
+	VOID TakeSnapshot(VOID*, Size*);
 
 	// Inherited via  IDraw
 	ULONG __stdcall Release() override;
