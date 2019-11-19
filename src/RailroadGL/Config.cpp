@@ -165,6 +165,7 @@ namespace Config
 			OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
 			DEFAULT_PITCH | FF_DONTCARE, TEXT("MS Shell Dlg"));
 		config.icon = LoadIcon(hModule, "IHS");
+		config.msgMenu = RegisterWindowMessage(WM_CHECK_MENU);
 
 		CHAR buffer[256];
 		MENUITEMINFO info;

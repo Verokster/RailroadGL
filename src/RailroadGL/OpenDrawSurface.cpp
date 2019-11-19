@@ -30,12 +30,8 @@
 #include "Resource.h"
 
 OpenDrawSurface::OpenDrawSurface(IDrawUnknown** list, OpenDraw* lpDD, SurfaceType type)
+	: IDrawSurface(list)
 {
-	this->refCount = 1;
-	this->list = list;
-	this->last = *list;
-	*list = this;
-
 	this->ddraw = lpDD;
 
 	this->attachedPalette = NULL;
@@ -142,7 +138,7 @@ HRESULT __stdcall OpenDrawSurface::Lock(LPRECT lpDestRect, LPDDSURFACEDESC lpDDS
 	return DD_OK;
 }
 
-HRESULT __stdcall OpenDrawSurface::SetClipper(IDrawClipper * lpDDClipper)
+HRESULT __stdcall OpenDrawSurface::SetClipper(IDrawClipper* lpDDClipper)
 {
 	OpenDrawClipper* old = this->attachedClipper;
 	this->attachedClipper = (OpenDrawClipper*)lpDDClipper;
@@ -163,7 +159,7 @@ HRESULT __stdcall OpenDrawSurface::SetClipper(IDrawClipper * lpDDClipper)
 	return DD_OK;
 }
 
-HRESULT __stdcall OpenDrawSurface::SetPalette(IDrawPalette * lpDDPalette)
+HRESULT __stdcall OpenDrawSurface::SetPalette(IDrawPalette* lpDDPalette)
 {
 	OpenDrawPalette* old = this->attachedPalette;
 	this->attachedPalette = (OpenDrawPalette*)lpDDPalette;
@@ -184,7 +180,7 @@ HRESULT __stdcall OpenDrawSurface::SetPalette(IDrawPalette * lpDDPalette)
 	return DD_OK;
 }
 
-HRESULT __stdcall OpenDrawSurface::Blt(LPRECT lpDestRect, IDrawSurface * lpDDSrcSurface, LPRECT lpSrcRect, DWORD dwFlags, LPDDBLTFX lpDDBltFx)
+HRESULT __stdcall OpenDrawSurface::Blt(LPRECT lpDestRect, IDrawSurface* lpDDSrcSurface, LPRECT lpSrcRect, DWORD dwFlags, LPDDBLTFX lpDDBltFx)
 {
 	OpenDrawSurface* surface = (OpenDrawSurface*)lpDDSrcSurface;
 
@@ -232,12 +228,20 @@ HRESULT __stdcall OpenDrawSurface::Blt(LPRECT lpDestRect, IDrawSurface * lpDDSrc
 
 			if (width == this->mode.width && width == surface->mode.width)
 				MemoryCopy(destination, source, width * height * sizeof(WORD));
-			else do
-			{
-				MemoryCopy(destination, source, width * sizeof(WORD));
-				source += sWidth;
-				destination += dWidth;
-			} while (--height);
+			else
+				do
+				{
+					__asm
+					{
+						MOV EDI, destination
+						MOV ESI, source
+						MOV ECX, width
+						REP MOVSW
+					}
+
+					source += sWidth;
+					destination += dWidth;
+				} while (--height);
 		}
 		else if (this->attachedPalette)
 		{

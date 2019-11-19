@@ -28,8 +28,10 @@
 #include "IDrawPalette.h"
 #include "IDrawClipper.h"
 
-class IDrawSurface : public IDrawUnknown
-{
+class IDrawSurface : public IDrawUnknown {
+protected:
+	IDrawSurface(IDrawUnknown** list);
+
 	// Inherited via IDirectDrawSurface
 	virtual HRESULT __stdcall AddAttachedSurface(IDrawSurface*);
 	virtual HRESULT __stdcall AddOverlayDirtyRect(LPRECT);

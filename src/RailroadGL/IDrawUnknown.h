@@ -26,17 +26,18 @@
 
 #include "ddraw.h"
 
-class IDrawUnknown
-{
+class IDrawUnknown {
 protected:
 	ULONG refCount;
-	
+
 public:
 	IDrawUnknown** list;
 	IDrawUnknown* last;
 
 	VOID* operator new(size_t);
 	VOID operator delete(VOID*);
+
+	IDrawUnknown(IDrawUnknown** list);
 
 	virtual HRESULT __stdcall QueryInterface(REFIID, LPVOID*);
 	virtual ULONG __stdcall AddRef();

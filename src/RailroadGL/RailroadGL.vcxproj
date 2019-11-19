@@ -210,7 +210,7 @@
       <BaseAddress>0x60000000</BaseAddress>
       <SectionAlignment>4096</SectionAlignment>
       <ModuleDefinitionFile>$(ProjectDir)module.def</ModuleDefinitionFile>
-      <OutputFile>D:\Games\RRT2\wsock32$(TargetExt)</OutputFile>
+      <OutputFile>D:\Games\RRT2\WSOCK32$(TargetExt)</OutputFile>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
       <LinkErrorReporting>NoErrorReport</LinkErrorReporting>
       <CLRSupportLastError>Disabled</CLRSupportLastError>

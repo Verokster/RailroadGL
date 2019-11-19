@@ -26,8 +26,10 @@
 
 #include "IDrawUnknown.h"
 
-class IDrawClipper : public IDrawUnknown
-{
+class IDrawClipper : public IDrawUnknown {
+protected:
+	IDrawClipper(IDrawUnknown** list);
+
 	// Inherited via IDirectDrawClipper
 	virtual HRESULT __stdcall GetClipList(LPRECT, LPRGNDATA, LPDWORD);
 	virtual HRESULT __stdcall GetHWnd(HWND*);

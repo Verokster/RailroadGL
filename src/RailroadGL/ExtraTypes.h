@@ -118,6 +118,7 @@ struct ConfigItems {
 	HMENU menu;
 	HICON icon;
 	HFONT font;
+	UINT msgMenu;
 	BOOL isPlatinum;
 	BOOL singleWindow;
 	WINDOWPLACEMENT windowPlacement;

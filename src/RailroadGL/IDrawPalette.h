@@ -26,12 +26,13 @@
 
 #include "IDrawUnknown.h"
 
-class IDrawPalette : public IDrawUnknown
-{
+class IDrawPalette : public IDrawUnknown {
+protected:
+	IDrawPalette(IDrawUnknown** list);
+
 	// Inherited via IDirectDrawPalette
 	virtual HRESULT __stdcall GetCaps(LPDWORD);
 	virtual HRESULT __stdcall GetEntries(DWORD, DWORD, DWORD, LPPALETTEENTRY);
 	virtual HRESULT __stdcall Initialize(LPDIRECTDRAW, DWORD, LPPALETTEENTRY);
 	virtual HRESULT __stdcall SetEntries(DWORD, DWORD, DWORD, LPPALETTEENTRY);
 };
-

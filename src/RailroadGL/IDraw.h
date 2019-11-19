@@ -29,8 +29,10 @@
 #include "IDrawClipper.h"
 #include "IDrawSurface.h"
 
-class IDraw : public IDrawUnknown
-{
+class IDraw : public IDrawUnknown {
+protected:
+	IDraw(IDrawUnknown** list);
+
 	// Inherited via IDirectDraw7
 	virtual HRESULT __stdcall Compact();
 	virtual HRESULT __stdcall CreateClipper(DWORD, IDrawClipper**, IDrawUnknown*);
@@ -53,4 +55,3 @@ class IDraw : public IDrawUnknown
 	virtual HRESULT __stdcall SetDisplayMode(DWORD, DWORD, DWORD);
 	virtual HRESULT __stdcall WaitForVerticalBlank(DWORD, HANDLE);
 };
-

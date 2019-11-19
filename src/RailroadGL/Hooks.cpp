@@ -32,6 +32,7 @@
 #include "Config.h"
 #include "Resource.h"
 #include "Window.h"
+#include "smack.h"
 
 #define CHECKVALUE (WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX)
 
@@ -196,13 +197,14 @@ namespace Hooks
 
 					if (!file->address)
 					{
-						file->address = MapViewOfFile(file->hMap, FILE_MAP_READ, 0, 0, 0);;
+						file->address = MapViewOfFile(file->hMap, FILE_MAP_READ, 0, 0, 0);
+						;
 						if (!file->address)
 							return res;
 					}
 
 					headNT = (PIMAGE_NT_HEADERS)((BYTE*)file->address + ((PIMAGE_DOS_HEADER)file->address)->e_lfanew);
-					PIMAGE_SECTION_HEADER sh = (PIMAGE_SECTION_HEADER)((DWORD)& headNT->OptionalHeader + headNT->FileHeader.SizeOfOptionalHeader);
+					PIMAGE_SECTION_HEADER sh = (PIMAGE_SECTION_HEADER)((DWORD)&headNT->OptionalHeader + headNT->FileHeader.SizeOfOptionalHeader);
 
 					nameThunk = NULL;
 					DWORD sCount = headNT->FileHeader.NumberOfSections;
@@ -228,8 +230,8 @@ namespace Hooks
 					WORD hint;
 					if (ReadWord((INT)name - baseOffset, &hint) && !StrCompare((CHAR*)name->Name, function))
 					{
-						if (ReadDWord((INT)& addressThunk->u1.AddressOfData - baseOffset, &res))
-							PatchDWord((INT)& addressThunk->u1.AddressOfData - baseOffset, (DWORD)addr);
+						if (ReadDWord((INT)&addressThunk->u1.AddressOfData - baseOffset, &res))
+							PatchDWord((INT)&addressThunk->u1.AddressOfData - baseOffset, (DWORD)addr);
 
 						return res;
 					}
@@ -448,11 +450,10 @@ namespace Hooks
 			return EndPaint(hWnd, lpPaint);
 	}
 
-	DECLARE_HANDLE(HSMACK);
 	DWORD _SmackOpen;
-	HSMACK __stdcall SmackOpenHook(CHAR* hSrcFile, DWORD uFlags, DWORD uExtraBuffers)
+	SMACK* __stdcall SmackOpenHook(CHAR* hSrcFile, UINT uFlags, LPVOID uExtraBuffers)
 	{
-		if (uFlags == 0xFE000)
+		if (uFlags == SMACK_TRACKS)
 		{
 			CHAR* p = StrLastChar(hSrcFile, '\\');
 			if (!p)
@@ -461,10 +462,16 @@ namespace Hooks
 				++p;
 
 			if (StrCompareInsensitive(p, "intro_01.smk"))
-				uFlags |= 0x200100;
+				uFlags |= SMACK_Y_DOUBLE;
 		}
 
-		return ((HSMACK(__stdcall*)(CHAR*, DWORD, DWORD))_SmackOpen)(hSrcFile, uFlags, uExtraBuffers);
+		return ((SMACK * (__stdcall*)(CHAR*, UINT, LPVOID)) _SmackOpen)(hSrcFile, uFlags, uExtraBuffers);
+	}
+
+	DWORD _SmackToBuffer;
+	VOID __stdcall SmackToBufferHook(SMACK* smk, INT left, INT top, UINT pitch, INT dest_height, LPVOID buf, UINT flags)
+	{
+		((VOID(__stdcall*)(SMACK*, INT, INT, UINT, INT, LPVOID, UINT))_SmackToBuffer)(smk, left, top, pitch, dest_height, buf, flags);
 	}
 
 	HMODULE __stdcall LoadLibraryHook(LPCSTR lpLibFileName)
@@ -506,13 +513,7 @@ namespace Hooks
 		PIMAGE_NT_HEADERS headNT = (PIMAGE_NT_HEADERS)((BYTE*)hModule + ((PIMAGE_DOS_HEADER)hModule)->e_lfanew);
 		baseOffset = (INT)hModule - (INT)headNT->OptionalHeader.ImageBase;
 
-		{
-			CHAR path[MAX_PATH];
-			GetModuleFileName(hModule, path, MAX_PATH - 1);
-			CHAR* p = StrLastChar(path, '\\');
-			StrCopy(p + 1, "DDRAW.dll");
-			PatchEntryPoint(path, FakeEntryPoint);
-		}
+		PatchEntryPoint("DDRAW.dll", FakeEntryPoint);
 
 		{
 			MappedFile file = { hModule, NULL, NULL, NULL };
@@ -535,6 +536,7 @@ namespace Hooks
 				PatchFunction(&file, "EndPaint", EndPaintHook);
 
 				_SmackOpen = PatchFunction(&file, "_SmackOpen@12", SmackOpenHook);
+				_SmackToBuffer = PatchFunction(&file, "_SmackToBuffer@28", SmackToBufferHook);
 
 				PatchFunction(&file, "LoadLibraryA", LoadLibraryHook);
 				PatchFunction(&file, "FreeLibrary", FreeLibraryHook);

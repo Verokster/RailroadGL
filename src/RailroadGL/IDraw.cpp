@@ -25,6 +25,11 @@
 #include "stdafx.h"
 #include "IDraw.h"
 
+IDraw::IDraw(IDrawUnknown** list)
+	: IDrawUnknown(list)
+{
+}
+
 // Inherited via IDirectDraw
 HRESULT __stdcall IDraw::Compact() { return DD_OK; }
 HRESULT __stdcall IDraw::CreateClipper(DWORD, IDrawClipper**, IDrawUnknown*) { return DD_OK; }

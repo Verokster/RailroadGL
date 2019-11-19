@@ -123,7 +123,7 @@ IDR_CUBIC_FRAGMENT			RCDATA		DISCARDABLE			"..\\glsl\\cubic\\fragment.glsl"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2019,10,28,61
+ FILEVERSION 2019,11,19,64
  PRODUCTVERSION 1,0,2,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
@@ -140,9 +140,9 @@ BEGIN
 		BLOCK "040904b0"
 		BEGIN
 			VALUE "FileDescription", "Railroad Tycoon II - OpenGL wrapper"
-			VALUE "FileVersion", "2019.10.28.061"
+			VALUE "FileVersion", "2019.11.19.064"
 			VALUE "LegalCopyright", "© 2019 Verok (verokster@gmail.com)"
-			VALUE "OriginalFilename", "wsock32.dll"
+			VALUE "OriginalFilename", "WSOCK32.dll"
 			VALUE "ProductVersion", "1.0.2"
 			VALUE "ProductName", "RailroadGL"
 		END

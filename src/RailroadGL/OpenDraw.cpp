@@ -289,8 +289,6 @@ DWORD __stdcall RenderThread(LPVOID lpParameter)
 		ddraw->hDc = NULL;
 	}
 
-	SetEvent(ddraw->hCheckEvent);
-
 	return NULL;
 }
 
@@ -315,7 +313,7 @@ VOID OpenDraw::RenderOld()
 	DWORD framePerHeight = config.mode->height / maxTexSize + (config.mode->height % maxTexSize ? 1 : 0);
 	DWORD frameCount = framePerWidth * framePerHeight;
 
-	SetEvent(this->hCheckEvent);
+	PostMessage(this->hWnd, config.msgMenu, NULL, NULL);
 
 	Frame* frames = (Frame*)MemoryAlloc(frameCount * sizeof(Frame));
 	{
@@ -569,7 +567,7 @@ VOID OpenDraw::RenderOld()
 
 VOID OpenDraw::RenderNew()
 {
-	SetEvent(this->hCheckEvent);
+	PostMessage(this->hWnd, config.msgMenu, NULL, NULL);
 
 	BOOL isTrueColor = config.mode->bpp != 16;
 	DWORD maxTexSize = GetPow2(config.mode->width > config.mode->height ? config.mode->width : config.mode->height);
@@ -836,9 +834,6 @@ VOID OpenDraw::RenderStart()
 	MemoryZero(&sAttribs, sizeof(SECURITY_ATTRIBUTES));
 	sAttribs.nLength = sizeof(SECURITY_ATTRIBUTES);
 	this->hDrawThread = CreateThread(&sAttribs, NULL, RenderThread, this, HIGH_PRIORITY_CLASS, &threadId);
-
-	WaitForSingleObject(this->hCheckEvent, INFINITE);
-	Window::CheckMenu();
 }
 
 VOID OpenDraw::RenderStop()
@@ -944,12 +939,8 @@ VOID OpenDraw::ScaleMouse(LPPOINT p)
 }
 
 OpenDraw::OpenDraw(IDrawUnknown** list)
+	: IDraw(list)
 {
-	this->refCount = 1;
-	this->list = list;
-	this->last = *list;
-	*list = this;
-
 	this->surfaceEntries = NULL;
 	this->clipperEntries = NULL;
 	this->paletteEntries = NULL;
@@ -964,14 +955,12 @@ OpenDraw::OpenDraw(IDrawUnknown** list)
 	this->isFinish = TRUE;
 
 	this->hDrawEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
-	this->hCheckEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
 }
 
 OpenDraw::~OpenDraw()
 {
 	this->RenderStop();
 	CloseHandle(this->hDrawEvent);
-	CloseHandle(this->hCheckEvent);
 }
 
 ULONG __stdcall OpenDraw::Release()

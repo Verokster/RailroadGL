@@ -43,7 +43,6 @@ public:
 
 	HANDLE hDrawThread;
 	HANDLE hDrawEvent;
-	HANDLE hCheckEvent;
 
 	Viewport viewport;
 	DWORD clearStage;

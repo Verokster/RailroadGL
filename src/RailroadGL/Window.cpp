@@ -697,6 +697,12 @@ namespace Window
 		}
 
 		default:
+			if (uMsg == config.msgMenu)
+			{
+				CheckMenu();
+				return NULL;
+			}
+
 			return CallWindowProc(OldWindowProc, hWnd, uMsg, wParam, lParam);
 		}
 	}
